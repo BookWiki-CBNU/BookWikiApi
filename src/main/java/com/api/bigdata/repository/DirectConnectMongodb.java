@@ -52,7 +52,13 @@ public class DirectConnectMongodb implements BookRepository{
     public List<JSONObject> findBooksByExcludeKdcCode(List<String> codes) {
         List<Document> documents = new ArrayList<>();
 
-        collection.find().limit(20).into(documents);
+        Document query = new Document();
+
+        for(String code:codes){
+            query.append("metadata.kdc_code", new Document("$ne", code));
+        }
+
+        collection.find(query).limit(20).into(documents);
         return documentsToJSONObject(documents);
     }
 
