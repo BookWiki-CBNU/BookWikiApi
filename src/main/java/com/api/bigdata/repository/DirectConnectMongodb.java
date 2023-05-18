@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -41,15 +42,16 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
-    public List<JSONObject> findBooksByKdcCode(String code) {
+    public List<JSONObject> findBookPreViewsByKdcCode(String code) {
         List<Document> documents = new ArrayList<>();
-        collection.find(eq("metadata.kdc_code",code)).limit(20).into(documents);
 
+        Document query = new Document("metadata.kdc_code", code);
+        getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }
 
     @Override
-    public List<JSONObject> findBooksByExcludeKdcCode(List<String> codes) {
+    public List<JSONObject> findBookPreViewsByExcludeKdcCode(List<String> codes) {
         List<Document> documents = new ArrayList<>();
 
         Document query = new Document();
@@ -58,7 +60,7 @@ public class DirectConnectMongodb implements BookRepository{
             query.append("metadata.kdc_code", new Document("$ne", code));
         }
 
-        collection.find(query).limit(20).into(documents);
+        getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }
 
@@ -75,6 +77,21 @@ public class DirectConnectMongodb implements BookRepository{
             jsonObjects.add(jsonObject);
         }
         return jsonObjects;
+    }
+
+    private AggregateIterable<Document> getPreViews(Document match){
+        // aggregate 파이프라인 작성
+        List<Document> pipeline = Arrays.asList(
+                new Document("$match", match),
+                new Document("$group", new Document("_id", "$metadata.doc_id")
+                        .append("doc_name", new Document("$first", "$metadata.doc_name"))
+                        .append("publisher", new Document("$first", "$metadata.publisher"))
+                        .append("kdc_label", new Document("$first", "$metadata.kdc_label"))),
+                new Document("$limit", 20)
+        );
+
+        // aggregate 실행
+        return collection.aggregate(pipeline);
     }
 
 

@@ -22,10 +22,10 @@ public class BookService {
     public List<JSONObject> readBooksByTag(BookTag tag){
         String strTag = tagMatching(tag);
         if(strTag==null){
-            return bookRepository.findBooksByExcludeKdcCode(new ArrayList<>(Arrays.asList("600", "300", "500")));
+            return bookRepository.findBookPreViewsByExcludeKdcCode(new ArrayList<>(Arrays.asList("600", "300", "500")));
         }
         else {
-            return bookRepository.findBooksByKdcCode(strTag);
+            return bookRepository.findBookPreViewsByKdcCode(strTag);
         }
     }
 
