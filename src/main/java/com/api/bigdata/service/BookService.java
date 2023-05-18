@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,7 +22,7 @@ public class BookService {
     public List<JSONObject> readBooksByTag(BookTag tag){
         String strTag = tagMatching(tag);
         if(strTag==null){
-            return bookRepository.findBooksByKdcCode("810");
+            return bookRepository.findBooksByExcludeKdcCode(new ArrayList<>(Arrays.asList("600", "300", "500")));
         }
         else {
             return bookRepository.findBooksByKdcCode(strTag);
