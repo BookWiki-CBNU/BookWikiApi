@@ -72,9 +72,10 @@ public class DirectConnectMongodb implements BookRepository{
                 new Document("_id", "$metadata.kdc_code")
                         .append("count", new Document("$sum", 1)));
 
-        getPreViews(query).into(documents);
+        collection.aggregate(Arrays.asList(query)).into(documents);
         return documentsToJSONObject(documents);
     }
+
 
 
     private List<JSONObject> documentsToJSONObject(List<Document> documents){

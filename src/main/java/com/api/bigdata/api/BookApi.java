@@ -1,5 +1,6 @@
 package com.api.bigdata.api;
 
+import com.api.bigdata.api.dto.BookCountResponse;
 import com.api.bigdata.api.dto.BookPreViewResponse;
 import com.api.bigdata.api.dto.BookPreViewResponseList;
 import com.api.bigdata.api.dto.BookReadResponse;
@@ -41,6 +42,17 @@ public class BookApi {
         BookPreViewResponseList bookPreViewResponseList = new BookPreViewResponseList(jsonObjects);
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }
+
+    @Operation(summary = "각 카테고리에 해당하는 책의 개수를 반환",
+            description = "각 카테고리에 해당하는 책의 개수를 반환")
+    @GetMapping("/read/count")
+    public ResponseEntity<BookCountResponse> readBookByCategory(){
+        BookCountResponse bookCountResponse = bookService.countBooks();
+        System.out.println("bookCountResponse = " + bookCountResponse);
+        return new ResponseEntity<>(bookCountResponse, HttpStatus.OK);
+    }
+
+
 
 
 
