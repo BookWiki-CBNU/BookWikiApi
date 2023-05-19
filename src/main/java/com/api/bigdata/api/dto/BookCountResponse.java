@@ -17,7 +17,6 @@ public class BookCountResponse {
     Long total=0L;
 
     public BookCountResponse(List<JSONObject> jsonObjects) {
-        BookTag.art.getCode();
         for(JSONObject jsonObject:jsonObjects){
             String id = jsonObject.get("_id").toString();
             Long count = (Long) jsonObject.get("count");
