@@ -76,6 +76,24 @@ public class DirectConnectMongodb implements BookRepository{
         return documentsToJSONObject(documents);
     }
 
+    @Override
+    public List<JSONObject> getRandomBooks() {
+        List<Document> documents = new ArrayList<>();
+
+
+
+        List<Document> pipeline = Arrays.asList(
+                new Document("$group", new Document("_id", "$metadata.doc_id")
+                        .append("doc_name", new Document("$first", "$metadata.doc_name"))
+                        .append("publisher", new Document("$first", "$metadata.publisher"))
+                        .append("kdc_label", new Document("$first", "$metadata.kdc_label"))),
+                new Document("$sample", new Document("size", 3))
+        );
+
+
+        collection.aggregate(pipeline).into(documents);
+        return documentsToJSONObject(documents);
+    }
 
 
     private List<JSONObject> documentsToJSONObject(List<Document> documents){

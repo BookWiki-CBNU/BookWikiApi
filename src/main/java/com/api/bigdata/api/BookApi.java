@@ -53,6 +53,14 @@ public class BookApi {
     }
 
 
+    @Operation(summary = "랜덤한 3개의 책을 반환", description = "랜덤한 3개의 책을 반환")
+    @GetMapping("/read/random")
+    public ResponseEntity<BookPreViewResponseList> readRandomBooks(){
+        List<JSONObject> books = bookService.readRandomBooks();
+        BookPreViewResponseList bookPreViewResponseList = new BookPreViewResponseList(books);
+        return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
+    }
+
 
 
 

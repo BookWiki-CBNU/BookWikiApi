@@ -39,4 +39,9 @@ public class BookService {
     }
 
 
+    public List<JSONObject> readRandomBooks(){
+        return bookRepository.getRandomBooks();
+    }
+
+
 }

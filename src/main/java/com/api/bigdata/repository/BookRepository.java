@@ -13,4 +13,7 @@ public interface BookRepository {
     List<JSONObject> findBookPreViewsByExcludeKdcCode(List<String> codes);
 
     List<JSONObject> countBooksByCode();
+    List<JSONObject> getRandomBooks();
+
+
 }
