@@ -1,6 +1,7 @@
 package com.api.bigdata.service;
 
 import com.api.bigdata.api.BookTag;
+import com.api.bigdata.api.dto.BookCountResponse;
 import com.api.bigdata.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -27,6 +28,12 @@ public class BookService {
         else {
             return bookRepository.findBookPreViewsByKdcCode(strTag);
         }
+    }
+
+    public BookCountResponse countBooks(){
+        List<JSONObject> counts = bookRepository.countBooksByCode();
+
+        return new BookCountResponse(counts);
     }
 
     private String tagMatching(BookTag tag){
