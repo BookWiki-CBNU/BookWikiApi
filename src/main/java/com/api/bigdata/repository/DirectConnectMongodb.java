@@ -64,6 +64,18 @@ public class DirectConnectMongodb implements BookRepository{
         return documentsToJSONObject(documents);
     }
 
+    @Override
+    public List<JSONObject> countBooksByCode() {
+        List<Document> documents = new ArrayList<>();
+
+        Document query = new Document("$group",
+                new Document("_id", "$metadata.kdc_code")
+                        .append("count", new Document("$sum", 1)));
+
+        getPreViews(query).into(documents);
+        return documentsToJSONObject(documents);
+    }
+
 
     private List<JSONObject> documentsToJSONObject(List<Document> documents){
         List<JSONObject> jsonObjects = new ArrayList<>();
