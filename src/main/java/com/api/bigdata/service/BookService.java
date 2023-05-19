@@ -21,12 +21,14 @@ public class BookService {
     }
 
     public List<JSONObject> readBooksByTag(BookTag tag){
-        String strTag = tagMatching(tag);
-        if(strTag==null){
-            return bookRepository.findBookPreViewsByExcludeKdcCode(new ArrayList<>(Arrays.asList("600", "300", "500")));
+        if(tag.equals(BookTag.other)){
+            return bookRepository.findBookPreViewsByExcludeKdcCode(
+                    new ArrayList<>(Arrays.asList(
+                            BookTag.art.getCode(), BookTag.technology.getCode(), BookTag.social.getCode()
+                    )));
         }
         else {
-            return bookRepository.findBookPreViewsByKdcCode(strTag);
+            return bookRepository.findBookPreViewsByKdcCode(tag.getCode());
         }
     }
 
@@ -36,21 +38,5 @@ public class BookService {
         return new BookCountResponse(counts);
     }
 
-    private String tagMatching(BookTag tag){
-        switch (tag){
-            case art -> {
-                return "600";
-            }
-            case social -> {
-                return "300";
-            }
-            case technology -> {
-                return "500";
-            }
-            default ->{
-                return null;
-            }
-        }
-    }
 
 }

@@ -1,9 +1,11 @@
 package com.api.bigdata.api.dto;
 
+import com.api.bigdata.api.BookTag;
 import lombok.Data;
 import org.json.simple.JSONObject;
 
 import java.util.List;
+
 
 @Data
 public class BookCountResponse {
@@ -12,14 +14,27 @@ public class BookCountResponse {
     Long art=0L;
     Long other=0L;
 
+    Long total=0L;
+
     public BookCountResponse(List<JSONObject> jsonObjects) {
+        BookTag.art.getCode();
         for(JSONObject jsonObject:jsonObjects){
-            switch (jsonObject.get("_id").toString()) {
-                case "600" -> this.art += (Long) jsonObject.get("count");
-                case "500" -> this.technology += (Long) jsonObject.get("count");
-                case "300" -> this.social += (Long) jsonObject.get("count");
-                default -> this.other += (Long) jsonObject.get("count");
+            String id = jsonObject.get("_id").toString();
+            Long count = (Long) jsonObject.get("count");
+            this.total += count;
+            if (BookTag.art.getCode().equals(id)) {
+                this.art += count;
             }
+            else if (BookTag.technology.getCode().equals(id)) {
+                this.technology += count;
+            }
+            else if (BookTag.social.getCode().equals(id)) {
+                this.social += count;
+            }
+            else {
+                this.other += count;
+            }
+
         }
     }
 }
