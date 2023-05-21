@@ -32,6 +32,10 @@ public class BookService {
         }
     }
 
+    public List<JSONObject> getBooksListByPublisher(String publisher){
+        return bookRepository.findBookPreViewsByPublisher(publisher);
+    }
+
     public BookCountResponse countBooks(){
         List<JSONObject> counts = bookRepository.countBooksByCode();
 

@@ -65,6 +65,15 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
+    public List<JSONObject> findBookPreViewsByPublisher(String publisher) {
+        List<Document> documents = new ArrayList<>();
+
+        Document query = new Document("metadata.publisher", new Document("$regex",publisher));
+        getPreViews(query).into(documents);
+        return documentsToJSONObject(documents);
+    }
+
+    @Override
     public List<JSONObject> countBooksByCode() {
         List<Document> documents = new ArrayList<>();
 

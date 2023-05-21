@@ -69,6 +69,13 @@ public class BookApi {
         return new ResponseEntity<>(bookDetailResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "출판사이름으로 책의 preview를 가져옴", description = "파라미터로 출판사 입력시 해당하는 preview를 20개만 가져옴")
+    @GetMapping("/read/publisher/{publisherName}")
+    public ResponseEntity<BookPreViewResponseList> readBookByCategory(@PathVariable("publisherName") @Valid String publisher){
+        List<JSONObject> jsonObjects = bookService.getBooksListByPublisher(publisher);
+        BookPreViewResponseList bookPreViewResponseList = new BookPreViewResponseList(jsonObjects);
+        return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
+    }
 
 
 
