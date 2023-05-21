@@ -14,6 +14,7 @@ public interface BookRepository {
 
     List<JSONObject> countBooksByCode();
     List<JSONObject> getRandomBooks();
+    List<JSONObject> findDetailsByDocId(String docId);
 
 
 }

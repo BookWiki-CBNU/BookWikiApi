@@ -95,6 +95,16 @@ public class DirectConnectMongodb implements BookRepository{
         return documentsToJSONObject(documents);
     }
 
+    @Override
+    public List<JSONObject> findDetailsByDocId(String  docId) {
+        List<Document> documents = new ArrayList<>();
+        Document query = new Document("metadata.doc_id", docId);
+
+        collection.find(query).into(documents);
+
+        return documentsToJSONObject(documents);
+    }
+
 
     private List<JSONObject> documentsToJSONObject(List<Document> documents){
         List<JSONObject> jsonObjects = new ArrayList<>();
