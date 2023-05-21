@@ -44,4 +44,10 @@ public class BookService {
     }
 
 
+    public List<JSONObject> readBookDetailByDocId(String docId){
+        return bookRepository.findDetailsByDocId(docId);
+    }
+
+
+
 }

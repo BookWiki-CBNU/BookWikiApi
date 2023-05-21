@@ -1,9 +1,9 @@
 package com.api.bigdata.api;
 
 import com.api.bigdata.api.dto.BookCountResponse;
-import com.api.bigdata.api.dto.BookPreViewResponse;
 import com.api.bigdata.api.dto.BookPreViewResponseList;
 import com.api.bigdata.api.dto.BookReadResponse;
+import com.api.bigdata.api.dto.bookDetail.BookDetailResponse;
 import com.api.bigdata.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/book")
@@ -59,6 +58,15 @@ public class BookApi {
         List<JSONObject> books = bookService.readRandomBooks();
         BookPreViewResponseList bookPreViewResponseList = new BookPreViewResponseList(books);
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "해당책의 doc_id를 입력시 그에 해당하는 책의 상세정보 반환",
+            description = "해당책의 doc_id를 입력시 그에 해당하는 책의 상세정보 반환")
+    @GetMapping("/read/detail/{doc_id}")
+    public ResponseEntity<BookDetailResponse> readBookDetailByDocId(@PathVariable("doc_id") @Valid String docId){
+        List<JSONObject> books = bookService.readBookDetailByDocId(docId);
+        BookDetailResponse bookDetailResponse = new BookDetailResponse(books);
+        return new ResponseEntity<>(bookDetailResponse, HttpStatus.OK);
     }
 
 
