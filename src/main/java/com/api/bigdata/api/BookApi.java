@@ -37,7 +37,7 @@ public class BookApi {
     @Operation(summary = "카테고리로 책의 preview를 가져옴", description = "파라미터로 카테고리 입력시 해당하는 preview를 20개만 가져옴")
     @GetMapping("/read/{category}")
     public ResponseEntity<BookPreViewResponseList> readBookByCategory(@PathVariable("category") @Valid BookTag category){
-        List<JSONObject> jsonObjects = bookService.readBooksByTag(category);
+        List<JSONObject> jsonObjects = bookService.getBooksListByTag(category);
         BookPreViewResponseList bookPreViewResponseList = new BookPreViewResponseList(jsonObjects);
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }

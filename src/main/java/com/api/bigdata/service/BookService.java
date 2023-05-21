@@ -20,7 +20,7 @@ public class BookService {
         return bookRepository.findBookById(id);
     }
 
-    public List<JSONObject> readBooksByTag(BookTag tag){
+    public List<JSONObject> getBooksListByTag(BookTag tag){
         if(tag.equals(BookTag.other)){
             return bookRepository.findBookPreViewsByExcludeKdcCode(
                     new ArrayList<>(Arrays.asList(
