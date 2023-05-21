@@ -1,8 +1,8 @@
 package com.api.bigdata.api;
 
-import com.api.bigdata.api.dto.BookCountResponse;
-import com.api.bigdata.api.dto.BookPreViewResponseList;
-import com.api.bigdata.api.dto.BookReadResponse;
+import com.api.bigdata.api.dto.bookCount.BookCountResponse;
+import com.api.bigdata.api.dto.bookPreView.BookPreViewResponseList;
+import com.api.bigdata.api.dto.simpleRead.BookReadResponse;
 import com.api.bigdata.api.dto.bookDetail.BookDetailResponse;
 import com.api.bigdata.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;

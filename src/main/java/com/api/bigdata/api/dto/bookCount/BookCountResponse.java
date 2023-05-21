@@ -1,4 +1,4 @@
-package com.api.bigdata.api.dto;
+package com.api.bigdata.api.dto.bookCount;
 
 import com.api.bigdata.api.BookTag;
 import lombok.Data;
