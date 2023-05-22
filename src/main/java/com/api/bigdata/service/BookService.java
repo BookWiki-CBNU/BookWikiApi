@@ -22,13 +22,13 @@ public class BookService {
 
     public List<JSONObject> getBooksListByTag(BookTag tag){
         if(tag.equals(BookTag.other)){
-            return bookRepository.findBookPreViewsByExcludeKdcCode(
+            return bookRepository.findBookPreViewsByBookNameAndExcludeKdcCodes(null,
                     new ArrayList<>(Arrays.asList(
                             BookTag.art.getCode(), BookTag.technology.getCode(), BookTag.social.getCode()
                     )));
         }
         else {
-            return bookRepository.findBookPreViewsByKdcCode(tag.getCode());
+            return bookRepository.findBookPreViewsByKdcCodeAndBookName(null,tag.getCode());
         }
     }
 
@@ -53,5 +53,16 @@ public class BookService {
     }
 
 
+    public List<JSONObject> getBooksListByBookNameAndTag(String bookName,BookTag tag){
+        if(tag.equals(BookTag.other)){
+            return bookRepository.findBookPreViewsByBookNameAndExcludeKdcCodes(bookName,
+                    new ArrayList<>(Arrays.asList(
+                            BookTag.art.getCode(), BookTag.technology.getCode(), BookTag.social.getCode()
+                    )));
+        }
+        else {
+            return bookRepository.findBookPreViewsByKdcCodeAndBookName(bookName,tag.getCode());
+        }
+    }
 
 }

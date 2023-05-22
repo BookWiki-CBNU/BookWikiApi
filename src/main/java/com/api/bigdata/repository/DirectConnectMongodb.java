@@ -42,24 +42,37 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
-    public List<JSONObject> findBookPreViewsByKdcCode(String code) {
+    public List<JSONObject> findBookPreViewsByKdcCodeAndBookName(String bookName,String code) {
         List<Document> documents = new ArrayList<>();
 
-        Document query = new Document("metadata.kdc_code", code);
+        Document query = new Document();
+
+        if(bookName!=null&&!bookName.isBlank()){
+            query.append("metadata.doc_name", new Document("$regex",bookName));
+        }
+
+        query.append("metadata.kdc_code", code);
         getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }
 
     @Override
-    public List<JSONObject> findBookPreViewsByExcludeKdcCode(List<String> codes) {
+    public List<JSONObject> findBookPreViewsByBookNameAndExcludeKdcCodes(String bookName,List<String> codes) {
         List<Document> documents = new ArrayList<>();
 
         Document query = new Document();
 
-        for(String code:codes){
-            query.append("metadata.kdc_code", new Document("$ne", code));
+        if(bookName!=null&&!bookName.isBlank()){
+            query.append("metadata.doc_name", new Document("$regex",bookName));
         }
 
+
+        List<Document> conditions = new ArrayList<>();
+        for (String code : codes) {
+            Document condition = new Document("metadata.kdc_code", new Document("$ne", code));
+            conditions.add(condition);
+        }
+        query.append("$and", conditions);
         getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }

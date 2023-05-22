@@ -8,9 +8,9 @@ public interface BookRepository {
 
     JSONObject findBookById(String id);
 
-    List<JSONObject> findBookPreViewsByKdcCode(String code);
+    List<JSONObject> findBookPreViewsByKdcCodeAndBookName(String bookName,String code);
 
-    List<JSONObject> findBookPreViewsByExcludeKdcCode(List<String> codes);
+    List<JSONObject> findBookPreViewsByBookNameAndExcludeKdcCodes(String BookName,List<String> codes);
 
     List<JSONObject> findBookPreViewsByPublisher(String publisher);
 
