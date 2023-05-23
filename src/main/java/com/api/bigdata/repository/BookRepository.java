@@ -7,6 +7,7 @@ import java.util.List;
 public interface BookRepository {
 
     JSONObject findBookById(String id);
+    byte[] getImageById(String id);
 
     List<JSONObject> findBookPreViewsByKdcCodeAndBookName(String bookName,String code);
 

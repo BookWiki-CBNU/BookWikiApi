@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,5 +85,14 @@ public class BookApi {
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }
 
+    @GetMapping("/image")
+    public ResponseEntity<byte[]> getImage(@RequestParam(value = "imageId") String imageId) {
+        // byte 배열로부터 이미지 생성
+        byte[] imageBytes = bookService.getImageById(imageId);
 
+        // 이미지와 함께 응답 생성
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(imageBytes);
+    }
 }

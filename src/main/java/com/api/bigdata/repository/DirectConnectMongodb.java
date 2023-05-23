@@ -1,12 +1,15 @@
 package com.api.bigdata.repository;
 
 import com.mongodb.client.*;
+import com.mongodb.client.gridfs.GridFSBucket;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +21,12 @@ public class DirectConnectMongodb implements BookRepository{
 
     private final JSONParser jsonParser;
     private final MongoCollection<Document> collection;
+    private final GridFSBucket gridFSBucket;
 
     public DirectConnectMongodb(MongodbConnector mongodbConnector) {
         collection = mongodbConnector.getCollection("books");
         jsonParser = new JSONParser();
+        gridFSBucket= mongodbConnector.getGridFSBucket();
     }
 
     JSONObject documentToJson(Document document){
@@ -39,6 +44,21 @@ public class DirectConnectMongodb implements BookRepository{
         Document document=collection.find().first();
 
         return documentToJson(document);
+    }
+
+    @Override
+    public byte[] getImageById(String id) {
+        // 가져올 사진의 ObjectId
+        ObjectId photoId = new ObjectId(id);
+
+        // 사진 가져오기
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        gridFSBucket.downloadToStream(photoId, outputStream);
+
+
+        // 가져온 이미지를 Spring으로 전달
+        byte[] imageBytes = outputStream.toByteArray();
+        return imageBytes;
     }
 
     @Override

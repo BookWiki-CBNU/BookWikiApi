@@ -65,4 +65,8 @@ public class BookService {
         }
     }
 
+    public byte[] getImageById(String id){
+        return bookRepository.getImageById(id);
+    }
+
 }
