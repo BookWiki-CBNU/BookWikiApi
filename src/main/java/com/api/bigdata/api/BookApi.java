@@ -74,7 +74,8 @@ public class BookApi {
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }
 
-    @Operation(summary = "카테고리로 책의 preview를 가져옴", description = "파라미터로 카테고리 입력시 해당하는 preview를 20개만 가져옴")
+    @Operation(summary = "카테고리와 책의 이름으로 검색",
+            description = "파라미터로 카테고리와 책의 이름을 입력시 해당하는 preview를 20개만 가져옴")
     @GetMapping("/read/bookNameSearch")
     public ResponseEntity<BookPreViewResponseList> readBookByBookNameAndCategory(
             @RequestParam(value = "bookName") String bookName, @RequestParam(value = "category") BookTag category){
