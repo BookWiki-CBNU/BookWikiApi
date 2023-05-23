@@ -85,6 +85,8 @@ public class BookApi {
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }
 
+    @Operation(summary = "이미지의 아이디로 이미지를 받아옴",
+            description = "파라미터로 이미지의 id를 전달시 그 id에 해당하는 이미지를 반환")
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage(@RequestParam(value = "imageId") String imageId) {
         // byte 배열로부터 이미지 생성
