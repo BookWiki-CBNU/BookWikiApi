@@ -17,9 +17,9 @@ public class BookDetailResponse {
 
     List<String> summaryList;
 
-    public BookDetailResponse(List<JSONObject> jsonObjects) {
+    public BookDetailResponse(List<JSONObject> jsonObjects,String imagePrefix) {
         JSONObject metadata = (JSONObject) jsonObjects.get(0).get("metadata");
-        this.image = toString(getOId((JSONObject) jsonObjects.get(0).get("image")));
+        this.image = toString(getOId((JSONObject) jsonObjects.get(0).get("image"),imagePrefix));
         this.docId = toString(metadata.get("doc_id"));
         this.docName = toString(metadata.get("doc_name"));
         this.author = toString(metadata.get("author"));
@@ -38,9 +38,9 @@ public class BookDetailResponse {
         else return data.toString();
     }
 
-    private Object getOId(JSONObject data){
+    private Object getOId(JSONObject data,String prefix){
         System.out.println("data = " + data);
         if(data==null) return null;
-        else return data.get("$oid");
+        else return prefix+data.get("$oid");
     }
 }

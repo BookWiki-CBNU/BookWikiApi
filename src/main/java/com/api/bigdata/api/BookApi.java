@@ -1,5 +1,6 @@
 package com.api.bigdata.api;
 
+import com.api.bigdata.Config;
 import com.api.bigdata.api.dto.bookCount.BookCountResponse;
 import com.api.bigdata.api.dto.bookPreView.BookPreViewResponseList;
 import com.api.bigdata.api.dto.simpleRead.BookReadResponse;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookApi {
     private final BookService bookService;
+    private final Config config;
 
     @Operation(summary = "테스트용도 api")
     @GetMapping("/test")
@@ -63,7 +65,7 @@ public class BookApi {
     @GetMapping("/read/detail/{doc_id}")
     public ResponseEntity<BookDetailResponse> readBookDetailByDocId(@PathVariable("doc_id") @Valid String docId){
         List<JSONObject> books = bookService.readBookDetailByDocId(docId);
-        BookDetailResponse bookDetailResponse = new BookDetailResponse(books);
+        BookDetailResponse bookDetailResponse = new BookDetailResponse(books, config.getImageUrl());
         return new ResponseEntity<>(bookDetailResponse, HttpStatus.OK);
     }
 
