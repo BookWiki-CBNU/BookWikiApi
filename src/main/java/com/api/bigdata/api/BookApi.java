@@ -105,7 +105,6 @@ public class BookApi {
     @GetMapping("/read/count/year/{publisher}")
     public ResponseEntity<List<JSONObject>> readBookByYear(@PathVariable("publisher") @Valid String publisher){
         List<JSONObject> books = bookService.countBooksByYear(publisher);
-        System.out.println("books = " + books);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 }
