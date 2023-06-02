@@ -42,8 +42,8 @@ public class BookApi {
         return new ResponseEntity<>(bookPreViewResponseList, HttpStatus.OK);
     }
 
-    @Operation(summary = "각 카테고리에 해당하는 책의 개수를 반환",
-            description = "각 카테고리에 해당하는 책의 개수를 반환")
+    @Operation(summary = "각 카테고리에 해당하는 요약의 개수를 반환",
+            description = "각 카테고리에 해당하는 요약의 개수를 반환")
     @GetMapping("/read/count")
     public ResponseEntity<BookCountResponse> readBookByCategory(){
         BookCountResponse bookCountResponse = bookService.countBooks();
