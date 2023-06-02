@@ -107,19 +107,37 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
-    public List<JSONObject> countBooksByYear(String publisher) {
+    public List<JSONObject> countBooksByYear() {
         List<Document> pipeline = new ArrayList<>();
 
-        pipeline.add(new Document("$match", new Document()
-                .append("metadata.publisher", "한국해양수산개발원")
+        pipeline.add(new Document("$match", new Document("metadata.kdc_code", new Document("$ne", null))
                 .append("metadata.published_year", new Document("$ne", null))));
+
         pipeline.add(new Document("$group", new Document("_id", "$metadata.doc_id")
+                .append("kdc_code", new Document("$first", "$metadata.kdc_code"))
                 .append("published_year", new Document("$first", "$metadata.published_year"))));
-        pipeline.add(new Document("$group", new Document("_id", "$published_year")
-                .append("bookCount", new Document("$sum", 1))));
-        pipeline.add(new Document("$project", new Document("_id", 0)
-                .append("year", "$_id")
-                .append("bookCount", 1)));
+
+
+        pipeline.add(new Document("$group", new Document("_id",
+                new Document("$cond", Arrays.asList(
+                        new Document("$lt", Arrays.asList("$published_year", "2014")),
+                        "2013년 이전",
+                        "$published_year"
+                )))
+                        .append("500", new Document("$sum",
+                                new Document("$cond", Arrays.asList(new Document("$eq", Arrays.asList("$kdc_code", "500")), 1, 0))))
+                        .append("300", new Document("$sum",
+                                new Document("$cond", Arrays.asList(new Document("$eq", Arrays.asList("$kdc_code", "300")), 1, 0))))
+                        .append("600", new Document("$sum",
+                                new Document("$cond", Arrays.asList(new Document("$eq", Arrays.asList("$kdc_code", "600")), 1, 0))))
+                        .append("other", new Document("$sum",
+                                new Document("$cond", Arrays.asList(
+                                        new Document("$not", new Document("$in", Arrays.asList("$kdc_code", Arrays.asList("600", "500", "300")))),
+                                        1,
+                                        0))))
+                        .append("total", new Document("$sum", 1))
+                ));
+        pipeline.add(new Document("$sort", new Document("_id", -1)));
 
         List<Document> documents = new ArrayList<>();
         collection.aggregate(pipeline).into(documents);

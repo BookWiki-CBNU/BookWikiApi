@@ -71,9 +71,9 @@ public class BookService {
     }
 
 
-    public List<JSONObject> countBooksByYear(String publisher){
-        bookRepository.countBooksByYear(publisher);
+    public List<JSONObject> countBooksByYear(){
+        bookRepository.countBooksByYear();
 
-        return bookRepository.countBooksByYear(publisher);
+        return bookRepository.countBooksByYear();
     }
 }
