@@ -99,4 +99,13 @@ public class BookApi {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(imageBytes);
     }
+
+    @Operation(summary = "각 카테고리에 해당하는 책의 개수를 반환",
+            description = "각 카테고리에 해당하는 책의 개수를 반환")
+    @GetMapping("/read/count/year/{publisher}")
+    public ResponseEntity<List<JSONObject>> readBookByYear(@PathVariable("publisher") @Valid String publisher){
+        List<JSONObject> books = bookService.countBooksByYear(publisher);
+        System.out.println("books = " + books);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 }

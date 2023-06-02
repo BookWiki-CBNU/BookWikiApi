@@ -70,4 +70,10 @@ public class BookService {
         return bookRepository.getImageById(id);
     }
 
+
+    public List<JSONObject> countBooksByYear(String publisher){
+        bookRepository.countBooksByYear(publisher);
+
+        return bookRepository.countBooksByYear(publisher);
+    }
 }
