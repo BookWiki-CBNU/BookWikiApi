@@ -37,7 +37,8 @@ public class BookService {
     }
 
     public BookCountResponse countBooks(){
-        List<JSONObject> counts = bookRepository.countBooksByCode();
+        List<JSONObject> counts = bookRepository.countBooksByCode(
+                Arrays.asList(BookTag.art.getCode(), BookTag.technology.getCode(), BookTag.social.getCode()));
 
         return new BookCountResponse(counts);
     }

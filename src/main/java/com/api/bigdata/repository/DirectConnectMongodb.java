@@ -119,6 +119,35 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
+    public List<JSONObject> countBooksByCode(List<String> codes) {
+        Document condition = new Document("_id", null);
+
+        List<Document> condExpressions = new ArrayList<>();
+        for(String code:codes){
+
+            condition.append(code, new Document("$sum", new Document("$cond",
+                    Arrays.asList(new Document("$eq", Arrays.asList("$metadata.kdc_code", code)), 1, 0))));
+
+            condExpressions.add(new Document("$ne", Arrays.asList("$metadata.kdc_code", code)));
+        }
+
+        Document otherCondition = new Document("$and", condExpressions);
+        Document otherSumExpression = new Document("$cond", Arrays.asList(otherCondition, 1, 0));
+        Document otherField = new Document("$sum", otherSumExpression);
+
+        condition.append("other", otherField);
+
+
+        condition.append("total", new Document("$sum", 1));
+
+        Document query = new Document("$group", condition);
+
+        List<Document> documents = new ArrayList<>();
+        collection.aggregate(Arrays.asList(query)).into(documents);
+        return documentsToJSONObject(documents);
+    }
+
+    @Override
     public List<JSONObject> getRandomBooks() {
         List<Document> documents = new ArrayList<>();
 
