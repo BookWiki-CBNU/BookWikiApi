@@ -100,8 +100,8 @@ public class BookApi {
                 .body(imageBytes);
     }
 
-    @Operation(summary = "각 카테고리에 해당하는 책의 개수를 반환",
-            description = "각 카테고리에 해당하는 책의 개수를 반환")
+    @Operation(summary = "각 출판사의 년도별 출판 권 수에 대한 통계 반환",
+            description = "각 출판사의 년도별 출판 권 수에 대한 통계 반환")
     @GetMapping("/read/count/year/{publisher}")
     public ResponseEntity<List<JSONObject>> readBookByYear(@PathVariable("publisher") @Valid String publisher){
         List<JSONObject> books = bookService.countBooksByYear(publisher);
