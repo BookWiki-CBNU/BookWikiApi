@@ -107,6 +107,23 @@ public class DirectConnectMongodb implements BookRepository{
     }
 
     @Override
+    public List<JSONObject> countBooksByYear(String publisher) {
+        List<Document> pipeline = new ArrayList<>();
+
+        pipeline.add(new Document("$match", new Document("metadata.publisher", publisher)));
+        pipeline.add(new Document("$group",
+                new Document("_id", "$metadata.published_year")
+                .append("bookCount", new Document("$sum", 1))));
+        pipeline.add(new Document("$project", new Document("_id", 0)
+                .append("year", "$_id")
+                .append("bookCount", 1)));
+
+        List<Document> documents = new ArrayList<>();
+        collection.aggregate(pipeline).into(documents);
+        return documentsToJSONObject(documents);
+    }
+
+    @Override
     public List<JSONObject> countBooksByCode() {
         List<Document> documents = new ArrayList<>();
 

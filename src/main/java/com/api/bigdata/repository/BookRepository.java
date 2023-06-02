@@ -15,6 +15,7 @@ public interface BookRepository {
 
     List<JSONObject> findBookPreViewsByPublisher(String publisher);
 
+    List<JSONObject> countBooksByYear(String publisher);
     List<JSONObject> countBooksByCode();
     List<JSONObject> countBooksByCode(List<String> codes);
     List<JSONObject> getRandomBooks();
