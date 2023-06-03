@@ -107,4 +107,12 @@ public class BookApi {
         List<JSONObject> books = bookService.countBooksByYear();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
+
+    @Operation(summary = "평점이 높은 상위 3개의 책을 반환",
+            description = "평점이 높은 상위 3개의 책을 반환")
+    @GetMapping("/read/topGrade")
+    public ResponseEntity<List<JSONObject>> getTopGradesByDocument(){
+        List<JSONObject> books = bookService.getTopGradesByDocument();
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 }

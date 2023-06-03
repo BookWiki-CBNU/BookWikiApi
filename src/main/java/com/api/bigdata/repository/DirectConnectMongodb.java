@@ -214,6 +214,23 @@ public class DirectConnectMongodb implements BookRepository{
         return documentsToJSONObject(documents);
     }
 
+    @Override
+    public List<JSONObject> getTopGradesByDocument() {
+        List<Document> pipeline = new ArrayList<>();
+        pipeline.add(new Document("$match", new Document("grade", new Document("$exists", true))));
+        pipeline.add(new Document("$group", new Document("_id", "$metadata.doc_id")
+                .append("grade", new Document("$avg", "$grade"))
+                .append("doc_name", new Document("$first", "$metadata.doc_name"))
+                .append("publisher", new Document("$first", "$metadata.publisher"))
+                .append("kdc_label", new Document("$first", "$metadata.kdc_label"))));
+        pipeline.add(new Document("$sort", new Document("grade", -1)));
+        pipeline.add(new Document("$limit", 3));
+
+        List<Document> documents = new ArrayList<>();
+        collection.aggregate(pipeline).into(documents);
+        return documentsToJSONObject(documents);
+    }
+
 
     private List<JSONObject> documentsToJSONObject(List<Document> documents){
         List<JSONObject> jsonObjects = new ArrayList<>();

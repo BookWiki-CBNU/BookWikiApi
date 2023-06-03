@@ -72,8 +72,10 @@ public class BookService {
 
 
     public List<JSONObject> countBooksByYear(){
-        bookRepository.countBooksByYear();
-
         return bookRepository.countBooksByYear();
+    }
+
+    public List<JSONObject> getTopGradesByDocument(){
+        return bookRepository.getTopGradesByDocument();
     }
 }

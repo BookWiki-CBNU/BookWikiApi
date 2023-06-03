@@ -20,6 +20,9 @@ public interface BookRepository {
     List<JSONObject> countBooksByCode(List<String> codes);
     List<JSONObject> getRandomBooks();
     List<JSONObject> findDetailsByDocId(String docId);
+    List<JSONObject> getTopGradesByDocument();
+
+
 
 
 }
