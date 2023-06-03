@@ -121,7 +121,7 @@ public class DirectConnectMongodb implements BookRepository{
         pipeline.add(new Document("$group", new Document("_id",
                 new Document("$cond", Arrays.asList(
                         new Document("$lt", Arrays.asList("$published_year", "2014")),
-                        "2013년 이전",
+                        "2013~",
                         "$published_year"
                 )))
                         .append("500", new Document("$sum",
@@ -137,7 +137,7 @@ public class DirectConnectMongodb implements BookRepository{
                                         0))))
                         .append("total", new Document("$sum", 1))
                 ));
-        pipeline.add(new Document("$sort", new Document("_id", -1)));
+        pipeline.add(new Document("$sort", new Document("_id", 1)));
 
         List<Document> documents = new ArrayList<>();
         collection.aggregate(pipeline).into(documents);
