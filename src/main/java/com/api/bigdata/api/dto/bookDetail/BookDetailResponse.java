@@ -18,19 +18,14 @@ public class BookDetailResponse {
     List<String> summaryList;
 
     public BookDetailResponse(List<JSONObject> jsonObjects,String imagePrefix) {
-        JSONObject metadata = (JSONObject) jsonObjects.get(0).get("metadata");
+        JSONObject data = jsonObjects.get(0);
         this.image = toString(getOId((JSONObject) jsonObjects.get(0).get("image"),imagePrefix));
-        this.docId = toString(metadata.get("doc_id"));
-        this.docName = toString(metadata.get("doc_name"));
-        this.author = toString(metadata.get("author"));
-        this.publisher = toString(metadata.get("publisher"));
-        this.kdcLabel = toString(metadata.get("kdc_label"));
-        this.summaryList = new ArrayList<>();
-
-        for(JSONObject jsonObject:jsonObjects){
-            if(jsonObject.get("summary")!=null)
-                summaryList.add(jsonObject.get("summary").toString());
-        }
+        this.docId = toString(data.get("doc_id"));
+        this.docName = toString(data.get("doc_name"));
+        this.author = toString(data.get("author"));
+        this.publisher = toString(data.get("publisher"));
+        this.kdcLabel = toString(data.get("kdc_label"));
+        this.summaryList = (List<String>) data.get("summary");
     }
 
     private String toString(Object data){
@@ -39,7 +34,6 @@ public class BookDetailResponse {
     }
 
     private Object getOId(JSONObject data,String prefix){
-        System.out.println("data = " + data);
         if(data==null) return null;
         else return prefix+data.get("$oid");
     }

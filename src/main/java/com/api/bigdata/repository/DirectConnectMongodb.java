@@ -206,10 +206,22 @@ public class DirectConnectMongodb implements BookRepository{
 
     @Override
     public List<JSONObject> findDetailsByDocId(String  docId) {
-        List<Document> documents = new ArrayList<>();
-        Document query = new Document("metadata.doc_id", docId);
 
-        collection.find(query).into(documents);
+        List<Document> pipeline = Arrays.asList(
+                new Document("$match", new Document("metadata.doc_id", docId)),
+                new Document("$group", new Document("_id", "$metadata.doc_id")
+                        .append("doc_id", new Document("$first", "$metadata.doc_id"))
+                        .append("image", new Document("$first", "$image"))
+                        .append("doc_name", new Document("$first", "$metadata.doc_name"))
+                        .append("author", new Document("$first", "$metadata.author"))
+                        .append("publisher", new Document("$first", "$metadata.publisher"))
+                        .append("kdc_label", new Document("$first", "$metadata.kdc_label"))
+                        .append("summary", new Document("$push", "$summary")))
+        );
+
+        List<Document> documents = new ArrayList<>();
+
+        collection.aggregate(pipeline).into(documents);
 
         return documentsToJSONObject(documents);
     }
