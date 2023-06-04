@@ -67,11 +67,10 @@ public class DirectConnectMongodb implements BookRepository{
 
         Document query = new Document();
 
+        query.append("metadata.kdc_code", code);
         if(bookName!=null&&!bookName.isBlank()){
             query.append("metadata.doc_name", new Document("$regex",bookName));
         }
-
-        query.append("metadata.kdc_code", code);
         getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }
@@ -82,17 +81,16 @@ public class DirectConnectMongodb implements BookRepository{
 
         Document query = new Document();
 
-        if(bookName!=null&&!bookName.isBlank()){
-            query.append("metadata.doc_name", new Document("$regex",bookName));
-        }
-
-
         List<Document> conditions = new ArrayList<>();
         for (String code : codes) {
             Document condition = new Document("metadata.kdc_code", new Document("$ne", code));
             conditions.add(condition);
         }
         query.append("$and", conditions);
+        if(bookName!=null&&!bookName.isBlank()){
+            query.append("metadata.doc_name", new Document("$regex",bookName));
+        }
+
         getPreViews(query).into(documents);
         return documentsToJSONObject(documents);
     }
